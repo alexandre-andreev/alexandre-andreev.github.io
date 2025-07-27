@@ -1,11 +1,465 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8">
-  <title>Описание упражнений по программированию</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Искусство разработки AI-продуктов: Интерактивный путеводитель</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" xintegrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0V4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Chosen Palette: Cool Gray & Muted Blue -->
+    <!-- Application Structure Plan: The application is structured as a single-page dashboard following the AI product lifecycle: Introduction, Opportunities, Solutions, and Adoption. A sticky top navigation allows users to jump between these thematic sections. This non-linear structure is chosen for better usability over a simple chapter-by-chapter layout. Key interactions include clickable diagrams to reveal details (e.g., Governance Pillars), tabbed content to manage complexity (e.g., AI Intelligence types), and an interactive chart to compare concepts (LLM Customization), facilitating both high-level overviews and deep dives. -->
+    <!-- Visualization & Content Choices: Key concepts are translated into visual, interactive formats. The core "Mental Model" is an HTML/CSS diagram for organizational clarity. The "Tree of AI Opportunities" uses interactive cards (HTML/CSS) to engage users. A key comparison of LLM customization techniques (Prompting vs. RAG vs. Fine-tuning) is visualized using a Chart.js bar chart to clearly show the trade-off between effort and specialization. The pillars of AI Governance are presented as a clickable radial diagram (HTML/CSS) that dynamically updates a content panel, making a dense topic explorable. This approach prioritizes user understanding and interaction. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+            color: #334155; /* slate-700 */
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link.active, .nav-link:hover {
+            color: #2563eb; /* blue-600 */
+            border-bottom-color: #2563eb; /* blue-600 */
+        }
+        .tab-button {
+            transition: all 0.3s;
+        }
+        .tab-button.active {
+            background-color: #2563eb; /* blue-600 */
+            color: white;
+        }
+        .content-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .content-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
+        }
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 45vh;
+            width: 100%;
+            max-width: 700px;
+        }
+        .governance-item {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .governance-item:hover, .governance-item.active {
+            background-color: #dbeafe; /* blue-100 */
+            color: #1e40af; /* blue-800 */
+            transform: scale(1.05);
+        }
+    </style>
 </head>
 <body>
-  <h1>Code Basics</h1>
-  <p>Результаты долгих трудов</p>
+
+    <header class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-xl font-bold text-slate-800">Искусство разработки AI-продуктов</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#intro" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600">Введение</a>
+                        <a href="#opportunities" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600">Возможности</a>
+                        <a href="#solutions" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600">Решения</a>
+                        <a href="#adoption" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600">Внедрение</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+
+        <section id="intro" class="mb-16 scroll-mt-24">
+            <h2 class="text-3xl font-bold text-slate-900 mb-4 text-center">Новая парадигма разработки продуктов</h2>
+            <p class="max-w-3xl mx-auto text-center text-lg text-slate-600 mb-12">
+                Продукты на базе искусственного интеллекта (AI) фундаментально отличаются от традиционного ПО. Они работают на основе вероятностей, а не жестких правил, что вносит неопределенность. Эта интерактивная сводка поможет вам освоить ментальную модель, необходимую для создания ценных AI-решений.
+            </p>
+
+            <div class="content-card p-6 md:p-8">
+                <h3 class="text-2xl font-bold text-slate-800 mb-6 text-center">Ментальная модель AI-системы</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                    <div class="bg-amber-50 p-6 rounded-lg border border-amber-200">
+                        <h4 class="text-xl font-semibold text-amber-800 mb-3">Пространство возможностей (Бизнес)</h4>
+                        <p class="text-amber-700 mb-4">Определяет бизнес-сторону проекта: выявление потребностей клиента и измеримой пользы для бизнеса.</p>
+                        <div class="space-y-3">
+                            <div class="bg-white p-3 rounded-md shadow-sm">
+                                <p class="font-semibold text-slate-800">Возможность</p>
+                                <p class="text-sm text-slate-600">Потребность или "боль" клиента, которую можно решить с помощью AI.</p>
+                            </div>
+                            <div class="bg-white p-3 rounded-md shadow-sm">
+                                <p class="font-semibold text-slate-800">Ценность</p>
+                                <p class="text-sm text-slate-600">Измеримая польза для бизнеса (экономия, доход, вовлеченность).</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-sky-50 p-6 rounded-lg border border-sky-200">
+                        <h4 class="text-xl font-semibold text-sky-800 mb-3">Пространство решений (Технология)</h4>
+                        <p class="text-sky-700 mb-4">Описывает техническую реализацию AI-системы, где все компоненты взаимосвязаны.</p>
+                        <div class="space-y-3">
+                            <div class="bg-white p-3 rounded-md shadow-sm">
+                                <p class="font-semibold text-slate-800">Данные (Data)</p>
+                                <p class="text-sm text-slate-600">Исходное сырье для обучения и оценки AI-моделей.</p>
+                            </div>
+                            <div class="bg-white p-3 rounded-md shadow-sm">
+                                <p class="font-semibold text-slate-800">Интеллект (Intelligence)</p>
+                                <p class="text-sm text-slate-600">AI-модели и алгоритмы, извлекающие ценность из данных.</p>
+                            </div>
+                             <div class="bg-white p-3 rounded-md shadow-sm">
+                                <p class="font-semibold text-slate-800">Пользовательский опыт (UX)</p>
+                                <p class="text-sm text-slate-600">Интерфейс и взаимодействие пользователя с AI-системой.</p>
+                            </div>
+                            <div class="bg-white p-3 rounded-md shadow-sm">
+                                <p class="font-semibold text-slate-800">Управление (Governance)</p>
+                                <p class="text-sm text-slate-600">Требования к безопасности, этике и прозрачности.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="opportunities" class="mb-16 scroll-mt-24">
+            <h2 class="text-3xl font-bold text-slate-900 mb-4 text-center">Часть 1: Поиск и оценка возможностей</h2>
+            <p class="max-w-3xl mx-auto text-center text-lg text-slate-600 mb-12">
+                Успех AI-продукта начинается с правильного выбора проблемы. "Дерево AI-возможностей" помогает систематизировать идеи и найти те, что принесут максимальную пользу, будь то автоматизация рутины или вдохновение для инноваций.
+            </p>
+            <div class="content-card p-6 md:p-8">
+                <h3 class="text-2xl font-bold text-slate-800 mb-6 text-center">Дерево AI-возможностей</h3>
+                <div id="opportunities-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                </div>
+            </div>
+        </section>
+
+        <section id="solutions" class="mb-16 scroll-mt-24">
+            <h2 class="text-3xl font-bold text-slate-900 mb-4 text-center">Часть 2: Разработка AI-решений</h2>
+            <p class="max-w-3xl mx-auto text-center text-lg text-slate-600 mb-12">
+                Создание AI-решения — это сложный процесс, требующий глубокого понимания данных, моделей и пользовательского опыта. Здесь мы рассмотрим ключевые технологии, от предиктивного анализа до продвинутых техник кастомизации языковых моделей.
+            </p>
+            <div class="bg-white rounded-lg shadow p-6 md:p-8">
+                <div class="mb-8 border-b border-slate-200">
+                    <nav class="-mb-px flex space-x-6" aria-label="Tabs">
+                        <button data-tab="intelligence" class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300">
+                            Типы интеллекта
+                        </button>
+                        <button data-tab="llm" class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300">
+                            Кастомизация LLM
+                        </button>
+                        <button data-tab="agents" class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300">
+                            Агентный AI
+                        </button>
+                    </nav>
+                </div>
+
+                <div id="intelligence-content" class="tab-content">
+                    <h3 class="text-2xl font-bold text-slate-800 mb-2">Спектр AI: от анализа до действия</h3>
+                    <p class="text-slate-600 mb-8">Выбор парадигмы AI зависит от задачи. Предиктивный AI анализирует прошлое для прогнозов, генеративный — создает новое, а агентный — выполняет сложные задачи, используя внешние инструменты.</p>
+                    <div id="intelligence-cards" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+                </div>
+
+                <div id="llm-content" class="tab-content hidden">
+                    <h3 class="text-2xl font-bold text-slate-800 mb-2">Кастомизация языковых моделей (LLM)</h3>
+                    <p class="text-slate-600 mb-8">Чтобы LLM приносили реальную пользу, их нужно адаптировать. Выбор метода кастомизации — это компромисс между усилиями, стоимостью и степенью специализации.</p>
+                    <div class="chart-container">
+                        <canvas id="llmChart"></canvas>
+                    </div>
+                </div>
+                
+                <div id="agents-content" class="tab-content hidden">
+                    <h3 class="text-2xl font-bold text-slate-800 mb-2">Архитектура AI-агента</h3>
+                    <p class="text-slate-600 mb-8">AI-агенты — это сложные системы, где языковая модель выступает в роли "мозга", координируя планирование, память и использование внешних инструментов для достижения цели.</p>
+                    <div id="agent-architecture" class="bg-slate-50 border border-slate-200 rounded-lg p-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-center"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="adoption" class="scroll-mt-24">
+            <h2 class="text-3xl font-bold text-slate-900 mb-4 text-center">Часть 3: Внедрение и управление</h2>
+            <p class="max-w-3xl mx-auto text-center text-lg text-slate-600 mb-12">
+                Ценность AI-продукта реализуется только через успешное внедрение. Это требует продуманного UX, который управляет неопределенностью, и надежной системы управления (Governance), обеспечивающей безопасность, этику и прозрачность.
+            </p>
+            <div class="content-card p-6 md:p-8">
+                <h3 class="text-2xl font-bold text-slate-800 mb-6 text-center">Ключевые аспекты AI Governance</h3>
+                <div class="flex flex-col md:flex-row gap-8">
+                    <div class="w-full md:w-1/3">
+                        <div id="governance-selector" class="grid grid-cols-2 gap-4">
+                        </div>
+                    </div>
+                    <div class="w-full md:w-2/3 bg-slate-50 p-6 rounded-lg border border-slate-200 min-h-[250px]">
+                        <div id="governance-details">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-800 text-white mt-16">
+        <div class="container mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center text-sm">
+            <p>Интерактивный путеводитель по книге "Искусство разработки AI-продуктов" (The Art of AI Product Development) доктора Янны Липенковой.</p>
+            <p>Создано для демонстрационных и образовательных целей.</p>
+        </div>
+    </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const contentData = {
+        opportunities: [
+            { id: 'automation', title: 'Автоматизация', description: 'Выполнение рутинных задач для снижения затрат и высвобождения ресурсов.', icon: 'fas fa-cogs' },
+            { id: 'augmentation', title: 'Дополнение', description: 'Объединение сильных сторон AI и человека для достижения лучших результатов.', icon: 'fas fa-handshake' },
+            { id: 'personalization', title: 'Персонализация', description: 'Предоставление индивидуального опыта для повышения вовлеченности.', icon: 'fas fa-bullseye' },
+            { id: 'inspiration', title: 'Вдохновение', description: 'Использование AI для генерации новых идей и ускорения инноваций.', icon: 'fas fa-lightbulb' },
+            { id: 'convenience', title: 'Удобство', description: 'Снижение трения в пользовательских путях и устранение утомительных шагов.', icon: 'fas fa-rocket' },
+            { id: 'emotional', title: 'Эмоции', description: 'Создание человекоподобных взаимодействий, которые резонируют на эмоциональном уровне.', icon: 'fas fa-heart' }
+        ],
+        intelligence: [
+            { title: 'Предиктивный AI', description: 'Анализирует данные для прогнозирования исходов или классификации. Отвечает на вопрос "Что произойдет?".', examples: 'Прогноз оттока, сегментация, рекомендации.' },
+            { title: 'Генеративный AI', description: 'Создает новую информацию (текст, изображения, код), похожую на обучающие данные. Отвечает на вопрос "Создай что-то новое".', examples: 'Написание текстов, генерация изображений.' },
+            { title: 'Агентный AI', description: 'Автоматизирует рабочие процессы, позволяя AI действовать и изменять состояние мира через инструменты. Отвечает на вопрос "Сделай это за меня".', examples: 'Автономное управление проектами.' }
+        ],
+        agentArchitecture: [
+            { name: 'Мозг (LM)', description: 'Центральный модуль, координирующий все действия.', icon: 'fas fa-brain' },
+            { name: 'Инструменты', description: 'Внешние API для взаимодействия с миром.', icon: 'fas fa-tools' },
+            { name: 'Планирование', description: 'Декомпозиция сложных задач на шаги.', icon: 'fas fa-map-marked-alt' },
+            { name: 'Память', description: 'Хранение опыта для обучения и непрерывности.', icon: 'fas fa-memory' }
+        ],
+        governance: {
+            security: {
+                title: 'Безопасность',
+                icon: 'fas fa-shield-alt',
+                description: 'Защита от уникальных угроз, таких как отравление данных и промпт-инъекции.',
+                threats: ['Отравление данных', 'Уязвимости цепочки поставок моделей', 'Промпт-инъекции'],
+                mitigations: ['Валидация данных и вывода', 'Контроль доступа', 'Изолированные среды (песочницы)']
+            },
+            privacy: {
+                title: 'Конфиденциальность',
+                icon: 'fas fa-lock',
+                description: 'Обеспечение контроля пользователей над своими данными через принцип "Privacy-by-Design".',
+                threats: ['Раскрытие данных из обучения', 'Несанкционированное использование', 'Непреднамеренные утечки'],
+                mitigations: ['Конфиденциальность по умолчанию', 'Минимизация данных', 'Сквозное шифрование']
+            },
+            bias: {
+                title: 'Предвзятость',
+                icon: 'fas fa-balance-scale',
+                description: 'Смягчение несправедливых или дискриминационных результатов, возникающих из данных или алгоритмов.',
+                threats: ['Предвзятость данных', 'Алгоритмическая предвзятость', 'Предвзятость цикла обратной связи'],
+                mitigations: ['Аудит и аугментация данных', 'Тесты на справедливость', 'Человеческий надзор (HITL)']
+            },
+            transparency: {
+                title: 'Прозрачность',
+                icon: 'fas fa-eye',
+                description: 'Построение доверия через объяснимость, интерпретируемость и подотчетность AI-систем.',
+                threats: ['Эффект "черного ящика"', 'Непонимание логики решений', 'Отсутствие ответственности'],
+                mitigations: ['Объяснимость (XAI)', 'Интерпретируемые выводы', 'Четкая подотчетность и надзор']
+            }
+        }
+    };
+
+    function populateOpportunities() {
+        const grid = document.getElementById('opportunities-grid');
+        contentData.opportunities.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'content-card p-6 flex flex-col items-center text-center';
+            card.innerHTML = `
+                <div class="text-4xl mb-4"><i class="${item.icon}"></i></div>
+                <h4 class="text-lg font-semibold text-slate-800 mb-2">${item.title}</h4>
+                <p class="text-slate-600 text-sm flex-grow">${item.description}</p>
+            `;
+            grid.appendChild(card);
+        });
+    }
+
+    function populateIntelligence() {
+        const container = document.getElementById('intelligence-cards');
+        contentData.intelligence.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'content-card p-6';
+            card.innerHTML = `
+                <h4 class="text-lg font-semibold text-slate-800 mb-2">${item.title}</h4>
+                <p class="text-slate-600 mb-3 text-sm">${item.description}</p>
+                <p class="text-xs text-slate-500 bg-slate-100 rounded-full px-3 py-1 inline-block">Примеры: ${item.examples}</p>
+            `;
+            container.appendChild(card);
+        });
+    }
+    
+    function populateAgentArchitecture() {
+        const container = document.getElementById('agent-architecture');
+        contentData.agentArchitecture.forEach(item => {
+            const element = document.createElement('div');
+            element.className = 'flex flex-col items-center space-y-2';
+            element.innerHTML = `
+                <div class="text-4xl"><i class="${item.icon}"></i></div>
+                <h5 class="font-semibold text-slate-700">${item.name}</h5>
+                <p class="text-xs text-slate-500">${item.description}</p>
+            `;
+            container.appendChild(element);
+        });
+    }
+
+    function setupTabs() {
+        const tabs = document.querySelectorAll('.tab-button');
+        const contents = document.querySelectorAll('.tab-content');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active', 'text-blue-600', 'border-blue-600'));
+                tab.classList.add('active', 'text-blue-600', 'border-blue-600');
+
+                contents.forEach(content => {
+                    content.classList.add('hidden');
+                });
+                document.getElementById(`${tab.dataset.tab}-content`).classList.remove('hidden');
+            });
+        });
+        tabs[0].click();
+    }
+
+    function createLLMChart() {
+        const ctx = document.getElementById('llmChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Промпт-инжиниринг', 'RAG (Поиск + Генерация)', 'Тонкая настройка (Fine-tuning)'],
+                datasets: [{
+                    label: 'Уровень усилий/стоимости',
+                    data: [2, 5, 9],
+                    backgroundColor: 'rgba(59, 130, 246, 0.5)',
+                    borderColor: 'rgba(59, 130, 246, 1)',
+                    borderWidth: 1
+                }, {
+                    label: 'Степень специализации',
+                    data: [3, 6, 10],
+                    backgroundColor: 'rgba(16, 185, 129, 0.5)',
+                    borderColor: 'rgba(16, 185, 129, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Относительный уровень (1-10)'
+                        }
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            footer: function(tooltipItems) {
+                                const tooltips = {
+                                    'Промпт-инжиниринг': 'Быстро и дешево, но ограничено знаниями модели.',
+                                    'RAG (Поиск + Генерация)': 'Повышает точность за счет внешних данных, средние затраты.',
+                                    'Тонкая настройка (Fine-tuning)': 'Максимальная специализация, но требует больших ресурсов и данных.'
+                                };
+                                return tooltips[tooltipItems[0].label] || '';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
+    function setupGovernance() {
+        const selector = document.getElementById('governance-selector');
+        const detailsContainer = document.getElementById('governance-details');
+        
+        Object.entries(contentData.governance).forEach(([key, value]) => {
+            const item = document.createElement('div');
+            item.className = 'governance-item flex flex-col items-center justify-center text-center p-4 bg-white rounded-lg shadow-sm border border-slate-200';
+            item.dataset.key = key;
+            item.innerHTML = `
+                <div class="text-3xl mb-2"><i class="${value.icon}"></i></div>
+                <h5 class="font-semibold text-sm">${value.title}</h5>
+            `;
+            selector.appendChild(item);
+        });
+
+        selector.addEventListener('click', (e) => {
+            const targetItem = e.target.closest('.governance-item');
+            if (!targetItem) return;
+
+            document.querySelectorAll('.governance-item').forEach(i => i.classList.remove('active'));
+            targetItem.classList.add('active');
+            
+            const key = targetItem.dataset.key;
+            const data = contentData.governance[key];
+            
+            detailsContainer.innerHTML = `
+                <h4 class="text-xl font-bold text-slate-800 mb-3">${data.title}</h4>
+                <p class="text-slate-600 mb-4">${data.description}</p>
+                <div class="space-y-3">
+                    <div>
+                        <h5 class="font-semibold text-sm text-slate-700 mb-1">Основные угрозы:</h5>
+                        <ul class="list-disc list-inside text-sm text-slate-600">
+                            ${data.threats.map(t => `<li>${t}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 class="font-semibold text-sm text-slate-700 mb-1">Стратегии смягчения:</h5>
+                        <ul class="list-disc list-inside text-sm text-slate-600">
+                            ${data.mitigations.map(m => `<li>${m}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+            `;
+        });
+        
+        selector.querySelector('.governance-item').click();
+    }
+    
+    function setupNavScroll() {
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('section');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(link => {
+                        link.classList.toggle('active', link.getAttribute('href').substring(1) === entry.target.id);
+                    });
+                }
+            });
+        }, { rootMargin: "-50% 0px -50% 0px" });
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+    }
+
+
+    populateOpportunities();
+    populateIntelligence();
+    populateAgentArchitecture();
+    setupTabs();
+    createLLMChart();
+    setupGovernance();
+    setupNavScroll();
+});
+</script>
+
 </body>
 </html>
